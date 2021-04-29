@@ -1,3 +1,6 @@
+from config import ERROR_PREFIX
+
+
 def read_file(filename):
     """
     Read file and print errors.
@@ -8,9 +11,9 @@ def read_file(filename):
         with open(filename, "r") as raw_text:
             return raw_text.read().splitlines()
     except Exception as e:
-        print(f'Error during reading the file: {e}')
+        print(f'{ERROR_PREFIX} Error during reading the file: {e}')
     else:
-        print(f'File successfuly read into memory: {filename}')
+        print(f'{ERROR_PREFIX} File successfuly read into memory: {filename}')
 
 
 def write_data_to_file(data, output_file_with_path):

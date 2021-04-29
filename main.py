@@ -2,7 +2,7 @@ import os
 
 from characters_map import characters_map_dict
 from utils import read_file, create_row_string, write_data_to_file, repair_rows_if_wrong_length
-from config import WIDTH_OF_CHAR, NUMBER_OF_CHARACTERS_PER_ROW, ROW_LEN, ERROR_PREFIX
+from config import WIDTH_OF_CHAR, NUMBER_OF_CHARACTERS_PER_ROW, ROW_LEN, ERROR_PREFIX, FEEDBACK_PREFIX
 
 
 def parse_file_into_entries(raw_text):
@@ -58,7 +58,7 @@ def parse_entries_into_data(entries):
 
         for character in entry:
             if len(character) < 9:
-                print('bad: ', character)
+                print(f'{FEEDBACK_PREFIX} bad: ', character)
             else:
                 # digit = [elem for elem in characters_map_dict.keys() if character == characters_map_dict[elem]]
 
@@ -87,7 +87,7 @@ def validate_account_numbers_checksum(data):
             row_string = create_row_string(row)
 
             if row[i] is None:
-                print('Wrong character: ', row_string)
+                print(f'{FEEDBACK_PREFIX} Wrong character: ', row_string)
                 wrong_flag = True
                 continue
             check_summary += (len(row) - i) * row[i]
@@ -95,9 +95,9 @@ def validate_account_numbers_checksum(data):
         if not wrong_flag:
             checksum = check_summary % 11
             if checksum == 0:
-                print('Valid: ', row_string)
+                print(f'{FEEDBACK_PREFIX} Valid: ', row_string)
             else:
-                print('Invalid: ', row_string)
+                print(f'{FEEDBACK_PREFIX} Invalid: ', row_string)
 
 
 def main(test_mode_file_name=False):
@@ -119,7 +119,7 @@ def main(test_mode_file_name=False):
     validated_data = validate_account_numbers_checksum(data)
 
     if_success = write_data_to_file(data, output_file_with_path)
-    print(if_success)
+    print(FEEDBACK_PREFIX, if_success)
 
 
 if __name__ == '__main__':
