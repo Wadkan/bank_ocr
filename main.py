@@ -92,6 +92,39 @@ def write_data_to_file(data, output_file_with_path):
         return f'Data parsed and saved into: {output_file_with_path}'
 
 
+def create_row_string(row):
+    # row_string = ''.join(map(str, row))
+
+    row_string = ''
+    for elem in row:
+        if elem is None:
+            elem = '_'
+        row_string += str(elem)
+    return row_string
+
+
+def validate_account_numbers_checksum(data):
+    for row in data:
+        wrong_flag = False
+        check_summary = 0
+
+        for i in range(len(row)):
+            row_string = create_row_string(row)
+
+            if row[i] is None:
+                print('Wrong character: ', row_string)
+                wrong_flag = True
+                continue
+            check_summary += (len(row) - i) * row[i]
+
+        if not wrong_flag:
+            checksum = check_summary % 11
+            if checksum == 0:
+                print('Valid: ', row_string)
+            else:
+                print('Invalid: ', row_string)
+
+
 def main(test_mode_file_name=False):
     if not test_mode_file_name:
         print("Welcome!")
@@ -106,10 +139,14 @@ def main(test_mode_file_name=False):
     raw_text = read_file(input_file_with_path)
     entries = parse_file_into_entries(raw_text)
     data = parse_entries_into_data(entries)
+
+    # validate account numbers
+    validated_data = validate_account_numbers_checksum(data)
+
     if_success = write_data_to_file(data, output_file_with_path)
     print(if_success)
 
 
 if __name__ == '__main__':
-    test_mode_file_name = 'use_case_1.txt'
+    test_mode_file_name = 'use_case_4_in.txt'
     main(test_mode_file_name)
