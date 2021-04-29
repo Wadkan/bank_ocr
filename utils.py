@@ -47,3 +47,18 @@ def create_row_string(row):
             elem = '_'
         row_string += str(elem)
     return row_string
+
+
+def repair_rows_if_wrong_length(row, row_len):
+    """
+    Check the length of the rows and add extra String ' ' if shorter, or cut the end if longer.
+    :param row: String
+    :param row_len: required length
+    :return:
+    """
+    if len(row) < row_len:
+        plus_spaces = ''.join([' ' for p in range(row_len - (len(row)))])
+        row += plus_spaces
+    elif len(row) > row_len:
+        row = row[:row_len]
+    return row

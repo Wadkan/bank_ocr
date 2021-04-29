@@ -1,7 +1,7 @@
 import os
 
 from characters_map import characters_map_dict
-from utils import read_file, create_row_string, write_data_to_file
+from utils import read_file, create_row_string, write_data_to_file, repair_rows_if_wrong_length
 
 
 def parse_file_into_entries(raw_text):
@@ -18,11 +18,7 @@ def parse_file_into_entries(raw_text):
     entries = []
 
     for row in raw_text:
-        if len(row) < row_len:
-            plus_spaces = ''.join([' ' for p in range(row_len - (len(row)))])
-            row += plus_spaces
-        elif len(row) > row_len:
-            row = row[:row_len]
+        row = repair_rows_if_wrong_length(row, row_len)
 
         # if first row, create empty elements into the list
         if i == 0:
