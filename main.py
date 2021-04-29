@@ -76,10 +76,11 @@ def parse_entries_into_data(entries):
 
 def validate_account_numbers_checksum(data):
     """
-    Calculate checksum, and print the validation: Invalid, Valid or Wrong character.
+    Calculate checksum, and print the validation using the proper SUFFIXes.
     :param data: List of Int Lists
+    :return: List of Strings
     """
-    final_rows = []
+    final_data = []
 
     for row in data:
         wrong_flag = False
@@ -101,8 +102,11 @@ def validate_account_numbers_checksum(data):
                 row_final = f'{row_string} {ERR_SUFFIX}'
         else:
             row_final = f'{row_string} {ILL_SUFFIX}'
+
         print(row_final)
-        final_rows.append(row_final)
+        final_data.append(row_final)
+
+    return final_data
 
 
 def main(test_mode_file_name=False):
@@ -121,10 +125,10 @@ def main(test_mode_file_name=False):
     data = parse_entries_into_data(entries)
 
     # validate account numbers
-    validated_data = validate_account_numbers_checksum(data)
+    final_data = validate_account_numbers_checksum(data)
 
-    if_success = write_data_to_file(data, output_file_with_path)
-    print(FEEDBACK_PREFIX, if_success)
+    write_data_to_file(data, output_file_with_path, 'int')
+    write_data_to_file(final_data, output_file_with_path, 'string')
 
 
 if __name__ == '__main__':

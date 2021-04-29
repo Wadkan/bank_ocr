@@ -1,4 +1,4 @@
-from config import ERROR_PREFIX, BAD_CHARACTER_SIGN
+from config import ERROR_PREFIX, BAD_CHARACTER_SIGN, FEEDBACK_PREFIX
 
 
 def read_file(filename):
@@ -16,24 +16,33 @@ def read_file(filename):
         print(f'{ERROR_PREFIX} File successfuly read into memory: {filename}')
 
 
-def write_data_to_file(data, output_file_with_path):
+def write_data_to_file(data, output_file_with_path, mode):
     """
     Write data list into a file, every element into separate a row.
     :param data: list of Strings
     :param output_file_with_path: Path
-    :return:
+    :param mode: 'string': rows as strings, 'int': rows as List of ints
+    :return: void
     """
+    output_file_with_path += '_' + mode
+
     try:
         with open(output_file_with_path, "w") as output_file:
             for row in data:
-                # row_string = ''.join(map(str, row))   # the easiest solution
-                row_string = create_row_string(row)
+                if mode == 'int':
+                    row_string = create_row_string(row)
+                elif mode == 'string':
+                    row_string = row
+
                 row_string += '\n'
+
                 output_file.write(row_string)
     except Exception as e:
-        return f'Error during writing: {e}'
+        feedback = f'Error during writing: {e}'
     else:
-        return f'Data parsed and saved into: {output_file_with_path}'
+        feedback = f'Data parsed and saved into: {output_file_with_path}'
+
+    print(FEEDBACK_PREFIX, feedback)
 
 
 def create_row_string(row):
