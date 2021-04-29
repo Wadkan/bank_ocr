@@ -79,19 +79,6 @@ def parse_entries_into_data(entries):
     return entries_parsed
 
 
-def write_data_to_file(data, output_file_with_path):
-    try:
-        with open(output_file_with_path, "w") as output_file:
-            for row in data:
-                row_string = ''.join(map(str, row))
-                row_string += '\n'
-                output_file.write(row_string)
-    except Exception as e:
-        return f'Error during writing: {e}'
-    else:
-        return f'Data parsed and saved into: {output_file_with_path}'
-
-
 def create_row_string(row):
     # row_string = ''.join(map(str, row))
 
@@ -101,6 +88,20 @@ def create_row_string(row):
             elem = '_'
         row_string += str(elem)
     return row_string
+
+
+def write_data_to_file(data, output_file_with_path):
+    try:
+        with open(output_file_with_path, "w") as output_file:
+            for row in data:
+                # row_string = ''.join(map(str, row))   # the easiest solution
+                row_string = create_row_string(row)
+                row_string += '\n'
+                output_file.write(row_string)
+    except Exception as e:
+        return f'Error during writing: {e}'
+    else:
+        return f'Data parsed and saved into: {output_file_with_path}'
 
 
 def validate_account_numbers_checksum(data):
