@@ -2,6 +2,7 @@ import os
 
 from characters_map import characters_map_dict
 from utils import read_file, create_row_string, write_data_to_file, repair_rows_if_wrong_length
+from config import WIDTH_OF_CHAR, NUMBER_OF_CHARACTERS_PER_ROW, ROW_LEN, ERROR_PREFIX
 
 
 def parse_file_into_entries(raw_text):
@@ -10,19 +11,16 @@ def parse_file_into_entries(raw_text):
     :param raw_text: List of Strings
     :return: List of String Lists
     """
-    width_of_char = 3  # todo: remove
-    number_of_characters_per_row = 9  # todo: remove
-    row_len = 27  # todo: remove
 
     i = 0
     entries = []
 
     for row in raw_text:
-        row = repair_rows_if_wrong_length(row, row_len)
+        row = repair_rows_if_wrong_length(row, ROW_LEN)
 
         # if first row, create empty elements into the list
         if i == 0:
-            characters = ['' for x in range(number_of_characters_per_row)]
+            characters = ['' for x in range(NUMBER_OF_CHARACTERS_PER_ROW)]
 
         if i == 3:
             # save entry
@@ -33,9 +31,9 @@ def parse_file_into_entries(raw_text):
         else:
             # build characters from row text
             num_of_char = 0
-            for part_of_character_end in range(3, (len(row) + 1), width_of_char):
+            for part_of_character_end in range(3, (len(row) + 1), WIDTH_OF_CHAR):
                 part_of_char = row[
-                               (part_of_character_end - width_of_char):part_of_character_end
+                               (part_of_character_end - WIDTH_OF_CHAR):part_of_character_end
                                ]
 
                 characters[num_of_char] += part_of_char
