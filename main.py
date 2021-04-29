@@ -70,6 +70,13 @@ def validate_a_row(row):
     return row_final
 
 
+def validation_and_correction(characters_parsed, data_string):
+    row_string, suffix = validate_a_row(characters_parsed)
+    characters_parsed_string = f'{row_string} {suffix}'
+    data_string.append(characters_parsed_string)
+    print(characters_parsed_string)
+
+
 def parse_entries_into_data(entries):
     """
     Parse '_' amd '|' characters into int
@@ -99,10 +106,7 @@ def parse_entries_into_data(entries):
         data_ints.append(characters_parsed)
 
         # DO VALIDATION
-        row_string, suffix = validate_a_row(characters_parsed)
-        characters_parsed_string = f'{row_string} {suffix}'
-        data_string.append(characters_parsed_string)
-        print(characters_parsed_string)
+        validation_and_correction(characters_parsed, data_string)
 
     return data_ints, data_string
 
