@@ -1,4 +1,4 @@
-from config import ERROR_PREFIX
+from config import ERROR_PREFIX, BAD_CHARACTER_SIGN
 
 
 def read_file(filename):
@@ -47,7 +47,7 @@ def create_row_string(row):
     row_string = ''
     for elem in row:
         if elem is None:
-            elem = '_'
+            elem = BAD_CHARACTER_SIGN
         row_string += str(elem)
     return row_string
 

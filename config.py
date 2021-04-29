@@ -12,6 +12,7 @@ ROW_LEN = int(config['settings']['row_len'])
 
 ERROR_PREFIX = config['text']['error_prefix']
 FEEDBACK_PREFIX = config['text']['feedback_prefix']
+BAD_CHARACTER_SIGN = config['text']['bad_character_sign']
 
 # to check:
 # [print(i) for i in settings]
