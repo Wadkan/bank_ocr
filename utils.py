@@ -1,4 +1,5 @@
 import os
+import time
 
 from config import ERROR_PREFIX, BAD_CHARACTER_SIGN, FEEDBACK_PREFIX
 from os.path import dirname, abspath
@@ -15,6 +16,16 @@ def check_and_create_folders():
     for folder in folders_list:
         folder_path = os.path.join(path, folder)
         if not os.path.exists(folder_path):
+            print(f'{ERROR_PREFIX} folder: <{folder}> does not exist.')
+            time.sleep(1)
+            print('.')
+            time.sleep(1)
+            print('.')
+            time.sleep(1)
+            print('.')
+            time.sleep(1)
+            print(f'{FEEDBACK_PREFIX} folder: <{folder}> is created.')
+            time.sleep(2)
             os.mkdir(folder_path)
 
 
