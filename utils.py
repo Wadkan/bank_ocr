@@ -8,12 +8,12 @@ from os.path import dirname, abspath
 def check_and_create_folders():
     path = dirname(abspath(__file__))
 
-    folders_list = [
+    required_folders_list = [
         'parsed_files',
         'raw_files',
         'correct_parsed_files'
     ]
-    for folder in folders_list:
+    for folder in required_folders_list:
         folder_path = os.path.join(path, folder)
         if not os.path.exists(folder_path):
             print(f'{ERROR_PREFIX} folder: <{folder}> does not exist.')
