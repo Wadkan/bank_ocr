@@ -6,6 +6,11 @@ from os.path import dirname, abspath
 
 
 def check_and_create_folders():
+    """
+    Check whether required folders exist.
+    If not, create them and print.
+    :rtype: void
+    """
     path = dirname(abspath(__file__))
 
     required_folders_list = [
