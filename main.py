@@ -44,6 +44,32 @@ def parse_file_into_entries(raw_text):
     return entries
 
 
+def validate_a_row(row):
+    """
+    Calculate checksum, and print the validation using the proper SUFFIX.
+    :param row: List of ints
+    :return: Data (String), Suffix (String)
+    """
+    wrong_flag = False
+    check_summary = 0
+    for i in range(len(row)):
+        row_string = create_row_string(row)
+
+        if row[i] is None:
+            wrong_flag = True
+            continue
+        check_summary += (len(row) - i) * row[i]
+    if not wrong_flag:
+        checksum = check_summary % 11
+        if checksum == 0:
+            row_final = row_string, None
+        else:
+            row_final = row_string, ERR_SUFFIX
+    else:
+        row_final = row_string, ILL_SUFFIX
+    return row_final
+
+
 def parse_entries_into_data(entries):
     """
     Parse '_' amd '|' characters into int
@@ -81,32 +107,6 @@ def parse_entries_into_data(entries):
     return data_ints, data_string
 
 
-def validate_a_row(row):
-    """
-    Calculate checksum, and print the validation using the proper SUFFIX.
-    :param row: List of ints
-    :return: Data (String), Suffix (String)
-    """
-    wrong_flag = False
-    check_summary = 0
-    for i in range(len(row)):
-        row_string = create_row_string(row)
-
-        if row[i] is None:
-            wrong_flag = True
-            continue
-        check_summary += (len(row) - i) * row[i]
-    if not wrong_flag:
-        checksum = check_summary % 11
-        if checksum == 0:
-            row_final = row_string, None
-        else:
-            row_final = row_string, ERR_SUFFIX
-    else:
-        row_final = row_string, ILL_SUFFIX
-    return row_final
-
-
 def main(test_mode_file_name=False):
     if not test_mode_file_name:
         print("Welcome!")
@@ -127,5 +127,5 @@ def main(test_mode_file_name=False):
 
 
 if __name__ == '__main__':
-    test_mode_file_name = 'use_case_4_in.txt'
+    test_mode_file_name = 'use_case_4_in.txt'  # comment it out to use CLI
     main(test_mode_file_name)
