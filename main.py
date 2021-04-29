@@ -1,7 +1,7 @@
 import os
 
 from characters_map import characters_map_dict
-from utils import read_file, create_row_string, write_data_to_file, repair_rows_if_wrong_length
+from utils import read_file, create_row_string, write_data_to_file, repair_rows_if_wrong_length, check_and_create_folders
 from config import WIDTH_OF_CHAR, NUMBER_OF_CHARACTERS_PER_ROW, ROW_LEN, ERROR_PREFIX, FEEDBACK_PREFIX, ILL_SUFFIX, ERR_SUFFIX
 
 
@@ -108,6 +108,8 @@ def parse_entries_into_data(entries):
 
 
 def main(test_mode_file_name=False):
+    check_and_create_folders()
+
     if not test_mode_file_name:
         print("Welcome!")
         filename = input("Please type input_filename from raw_files folder and hit enter: ")

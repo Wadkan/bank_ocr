@@ -1,4 +1,21 @@
+import os
+
 from config import ERROR_PREFIX, BAD_CHARACTER_SIGN, FEEDBACK_PREFIX
+from os.path import dirname, abspath
+
+
+def check_and_create_folders():
+    path = dirname(abspath(__file__))
+
+    folders_list = [
+        'parsed_files',
+        'raw_files',
+        'correct_parsed_files'
+    ]
+    for folder in folders_list:
+        folder_path = os.path.join(path, folder)
+        if not os.path.exists(folder_path):
+            os.mkdir(folder_path)
 
 
 def read_file(filename):
