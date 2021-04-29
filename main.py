@@ -50,7 +50,8 @@ def parse_entries_into_data(entries):
     :param entries: List of Strings
     :return: List of Int Lists
     """
-    entries_parsed = []
+    data_ints = []
+    data_string = []
 
     for entry in entries:
 
@@ -69,44 +70,41 @@ def parse_entries_into_data(entries):
 
                 characters_parsed.append(digit)
 
-        entries_parsed.append(characters_parsed)
+        data_ints.append(characters_parsed)
 
-    return entries_parsed
+        # DO VALIDATION
+        row_string, suffix = validate_a_row(characters_parsed)
+        characters_parsed_string = f'{row_string} {suffix}'
+        data_string.append(characters_parsed_string)
+        print(characters_parsed_string)
+
+    return data_ints, data_string
 
 
-def validate_account_numbers_checksum(data):
+def validate_a_row(row):
     """
-    Calculate checksum, and print the validation using the proper SUFFIXes.
-    :param data: List of Int Lists
-    :return: List of Strings
+    Calculate checksum, and print the validation using the proper SUFFIX.
+    :param row: List of ints
+    :return: Data (String), Suffix (String)
     """
-    final_data = []
+    wrong_flag = False
+    check_summary = 0
+    for i in range(len(row)):
+        row_string = create_row_string(row)
 
-    for row in data:
-        wrong_flag = False
-        check_summary = 0
-
-        for i in range(len(row)):
-            row_string = create_row_string(row)
-
-            if row[i] is None:
-                wrong_flag = True
-                continue
-            check_summary += (len(row) - i) * row[i]
-
-        if not wrong_flag:
-            checksum = check_summary % 11
-            if checksum == 0:
-                row_final = row_string
-            else:
-                row_final = f'{row_string} {ERR_SUFFIX}'
+        if row[i] is None:
+            wrong_flag = True
+            continue
+        check_summary += (len(row) - i) * row[i]
+    if not wrong_flag:
+        checksum = check_summary % 11
+        if checksum == 0:
+            row_final = row_string, None
         else:
-            row_final = f'{row_string} {ILL_SUFFIX}'
-
-        print(row_final)
-        final_data.append(row_final)
-
-    return final_data
+            row_final = row_string, ERR_SUFFIX
+    else:
+        row_final = row_string, ILL_SUFFIX
+    return row_final
 
 
 def main(test_mode_file_name=False):
@@ -122,13 +120,10 @@ def main(test_mode_file_name=False):
 
     raw_text = read_file(input_file_with_path)
     entries = parse_file_into_entries(raw_text)
-    data = parse_entries_into_data(entries)
+    data_ints, data_string = parse_entries_into_data(entries)
 
-    # validate account numbers
-    final_data = validate_account_numbers_checksum(data)
-
-    write_data_to_file(data, output_file_with_path, 'int')
-    write_data_to_file(final_data, output_file_with_path, 'string')
+    write_data_to_file(data_ints, output_file_with_path, 'int')
+    write_data_to_file(data_string, output_file_with_path, 'string')
 
 
 if __name__ == '__main__':
