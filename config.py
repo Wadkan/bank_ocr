@@ -15,6 +15,7 @@ FEEDBACK_PREFIX = config['text']['feedback_prefix']
 BAD_CHARACTER_SIGN = config['text']['bad_character_sign']
 ERR_SUFFIX = config['text']['err_suffix']
 ILL_SUFFIX = config['text']['ill_suffix']
+AMB_SUFFIX = config['text']['amb_suffix']
 
 # to check:
 # [print(i) for i in settings]
