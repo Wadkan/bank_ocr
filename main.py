@@ -2,7 +2,7 @@ import os
 
 from characters_map import characters_map_dict
 from utils import read_file, create_row_string, write_data_to_file, repair_rows_if_wrong_length
-from config import WIDTH_OF_CHAR, NUMBER_OF_CHARACTERS_PER_ROW, ROW_LEN, ERROR_PREFIX, FEEDBACK_PREFIX
+from config import WIDTH_OF_CHAR, NUMBER_OF_CHARACTERS_PER_ROW, ROW_LEN, ERROR_PREFIX, FEEDBACK_PREFIX, ILL_SUFFIX, ERR_SUFFIX
 
 
 def parse_file_into_entries(raw_text):
@@ -79,6 +79,8 @@ def validate_account_numbers_checksum(data):
     Calculate checksum, and print the validation: Invalid, Valid or Wrong character.
     :param data: List of Int Lists
     """
+    final_rows = []
+
     for row in data:
         wrong_flag = False
         check_summary = 0
@@ -87,7 +89,6 @@ def validate_account_numbers_checksum(data):
             row_string = create_row_string(row)
 
             if row[i] is None:
-                print(f'{FEEDBACK_PREFIX} Wrong character: ', row_string)
                 wrong_flag = True
                 continue
             check_summary += (len(row) - i) * row[i]
@@ -95,9 +96,13 @@ def validate_account_numbers_checksum(data):
         if not wrong_flag:
             checksum = check_summary % 11
             if checksum == 0:
-                print(f'{FEEDBACK_PREFIX} Valid: ', row_string)
+                row_final = row_string
             else:
-                print(f'{FEEDBACK_PREFIX} Invalid: ', row_string)
+                row_final = f'{row_string} {ERR_SUFFIX}'
+        else:
+            row_final = f'{row_string} {ILL_SUFFIX}'
+        print(row_final)
+        final_rows.append(row_final)
 
 
 def main(test_mode_file_name=False):
