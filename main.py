@@ -1,19 +1,15 @@
 import os
 
 from characters_map import characters_map_dict
-
-
-def read_file(filename):
-    try:
-        with open(filename, "r") as raw_text:
-            return raw_text.read().splitlines()
-    except Exception as e:
-        print(f'Error during reading the file: {e}')
-    else:
-        print(f'File successfuly read into memory: {filename}')
+from utils import read_file, create_row_string, write_data_to_file
 
 
 def parse_file_into_entries(raw_text):
+    """
+    Parse '_' and '|' signs from multiple rows into characters.
+    :param raw_text: List of Strings
+    :return: List of String Lists
+    """
     width_of_char = 3  # todo: remove
     number_of_characters_per_row = 9  # todo: remove
     row_len = 27  # todo: remove
@@ -28,9 +24,9 @@ def parse_file_into_entries(raw_text):
         elif len(row) > row_len:
             row = row[:row_len]
 
-        # if first row, create the elements of the list
+        # if first row, create empty elements into the list
         if i == 0:
-            characters = ['' for elem in range(number_of_characters_per_row)]
+            characters = ['' for x in range(number_of_characters_per_row)]
 
         if i == 3:
             # save entry
@@ -55,6 +51,11 @@ def parse_file_into_entries(raw_text):
 
 
 def parse_entries_into_data(entries):
+    """
+    Parse '_' amd '|' characters into int
+    :param entries: List of Strings
+    :return: List of Int Lists
+    """
     entries_parsed = []
 
     for entry in entries:
@@ -79,32 +80,11 @@ def parse_entries_into_data(entries):
     return entries_parsed
 
 
-def create_row_string(row):
-    # row_string = ''.join(map(str, row))
-
-    row_string = ''
-    for elem in row:
-        if elem is None:
-            elem = '_'
-        row_string += str(elem)
-    return row_string
-
-
-def write_data_to_file(data, output_file_with_path):
-    try:
-        with open(output_file_with_path, "w") as output_file:
-            for row in data:
-                # row_string = ''.join(map(str, row))   # the easiest solution
-                row_string = create_row_string(row)
-                row_string += '\n'
-                output_file.write(row_string)
-    except Exception as e:
-        return f'Error during writing: {e}'
-    else:
-        return f'Data parsed and saved into: {output_file_with_path}'
-
-
 def validate_account_numbers_checksum(data):
+    """
+    Calculate checksum, and print the validation: Invalid, Valid or Wrong character.
+    :param data: List of Int Lists
+    """
     for row in data:
         wrong_flag = False
         check_summary = 0
