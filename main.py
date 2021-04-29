@@ -98,8 +98,10 @@ def main(test_mode_file_name=False):
         filename = input("Please type input_filename from raw_files folder and hit enter: ")
     else:
         filename = test_mode_file_name
-    input_file_with_path = os.path.join("raw_files", filename)
-    output_file_with_path = os.path.join("parsed_files", filename)
+
+    dir_path = os.path.dirname(os.path.realpath(__file__))
+    input_file_with_path = os.path.join(dir_path, "raw_files", filename)
+    output_file_with_path = os.path.join(dir_path, "parsed_files", filename)
 
     raw_text = read_file(input_file_with_path)
     entries = parse_file_into_entries(raw_text)
