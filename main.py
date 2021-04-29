@@ -92,14 +92,12 @@ def write_data_to_file(data, output_file_with_path):
         return f'Data parsed and saved into: {output_file_with_path}'
 
 
-def main():
-    test_mode = True
-
-    print("Welcome!")
-    if not test_mode:
+def main(test_mode_file_name=False):
+    if not test_mode_file_name:
+        print("Welcome!")
         filename = input("Please type input_filename from raw_files folder and hit enter: ")
     else:
-        filename = "file1.txt"    # for testing without CLI
+        filename = test_mode_file_name
     input_file_with_path = os.path.join("raw_files", filename)
     output_file_with_path = os.path.join("parsed_files", filename)
 
@@ -111,4 +109,5 @@ def main():
 
 
 if __name__ == '__main__':
-    main()
+    test_mode_file_name = 'use_case_1.txt'
+    main(test_mode_file_name)
