@@ -4,8 +4,13 @@ from characters_map import characters_map_dict
 
 
 def read_file(filename):
-    with open(filename, "r") as raw_text:
-        return raw_text.read().splitlines()
+    try:
+        with open(filename, "r") as raw_text:
+            return raw_text.read().splitlines()
+    except Exception as e:
+        print(f'Error during reading the file: {e}')
+    else:
+        print(f'File successfuly read into memory: {filename}')
 
 
 def parse_file_into_entries(raw_text):
@@ -60,7 +65,13 @@ def parse_entries_into_data(entries):
             if len(character) < 9:
                 print('bad: ', character)
             else:
-                digit = [elem for elem in characters_map_dict.keys() if character == characters_map_dict[elem]]
+                # digit = [elem for elem in characters_map_dict.keys() if character == characters_map_dict[elem]]
+
+                digit = None
+                for elem in characters_map_dict.keys():
+                    if character == characters_map_dict[elem]:
+                        digit = elem
+
                 characters_parsed.append(digit)
 
         entries_parsed.append(characters_parsed)
@@ -68,17 +79,32 @@ def parse_entries_into_data(entries):
     return entries_parsed
 
 
+def write_data_to_file(data, output_file_with_path):
+    try:
+        with open(output_file_with_path, "w") as output_file:
+            for row in data:
+                row_string = ''.join(map(str, row))
+                row_string += '\n'
+                output_file.write(row_string)
+    except Exception as e:
+        return f'Error during writing: {e}'
+    else:
+        return f'Data parsed and saved into: {output_file_with_path}'
+
+
 def main():
-    # print("Welcome!")
-    # filename = input("Please type filename from raw_files folder and hit enter: ")
-    filename = "file1.txt"
-    file_with_path = os.path.join("raw_files", filename)
-    raw_text = read_file(file_with_path)
+    print("Welcome!")
+    filename = input("Please type input_filename from raw_files folder and hit enter: ")
+    # filename = "file1.txt"    # for testing without CLI
+    input_file_with_path = os.path.join("raw_files", filename)
+    output_file_with_path = os.path.join("parsed_files", filename)
+
+    raw_text = read_file(input_file_with_path)
     entries = parse_file_into_entries(raw_text)
     data = parse_entries_into_data(entries)
-    print(data)
+    if_success = write_data_to_file(data, output_file_with_path)
+    print(if_success)
 
 
 if __name__ == '__main__':
     main()
-'| ||_|'
