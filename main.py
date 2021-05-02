@@ -90,7 +90,7 @@ def validation_and_correction(characters_parsed, data_string, characters_parsed_
         else:
             row_string, suffix = valid_solutions[0][0]
 
-    characters_parsed_string = f'{row_string} {suffix}'
+    characters_parsed_string = f'{row_string} {suffix if suffix else ""}'
     data_string.append(characters_parsed_string)
     print(characters_parsed_string)
 
