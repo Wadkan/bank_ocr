@@ -85,13 +85,11 @@ def create_row_string(row):
     :param row:
     :return: String
     """
-    # row_string = ''.join(map(str, row))
-
     row_string = ''
     for elem in row:
         if elem is None:
-            elem = BAD_CHARACTER_SIGN
-        if elem > 9:
+            row_string += BAD_CHARACTER_SIGN
+        elif elem > 9:
             # in case of hex
             row_string += str(hex(10))[2:].upper()
         else:

@@ -2,7 +2,7 @@ import os
 
 from characters_map import character_map
 from utils import read_file, create_row_string, write_data_to_file, repair_rows_if_wrong_length, check_and_create_folders, get_corrections, get_digit_from_string
-from config import WIDTH_OF_CHAR, NUMBER_OF_CHARACTERS_PER_ROW, ROW_LEN, FEEDBACK_PREFIX, ILL_SUFFIX, ERR_SUFFIX, AMB_SUFFIX
+from config import WIDTH_OF_CHAR, NUMBER_OF_CHARACTERS_PER_ROW, ROW_LEN, FEEDBACK_PREFIX, ILL_SUFFIX, ERR_SUFFIX, AMB_SUFFIX, ERROR_PREFIX
 
 
 def parse_file_into_entries(raw_text):
@@ -170,6 +170,11 @@ def main(test_mode_file_name=False):
     input_file_with_path = os.path.join(dir_path, "raw_files", filename)
     output_file_with_path = os.path.join(dir_path, "parsed_files", filename)
 
+    # check if file does exist
+    if not os.path.exists(input_file_with_path):
+        print(f"{ERROR_PREFIX} File does not exist.")
+        return
+
     raw_text = read_file(input_file_with_path)
     entries = parse_file_into_entries(raw_text)
     data_ints, data_string = parse_entries_into_data(entries)
@@ -179,5 +184,15 @@ def main(test_mode_file_name=False):
 
 
 if __name__ == '__main__':
-    test_mode_file_name = 'use_case_a.txt'  # comment it out to use CLI
-    main(test_mode_file_name)
+    # test_mode_file_name = 'use_case_a.txt'  # comment it out to use CLI
+    main()
+
+    has_next = True
+    while has_next:
+        next_file_name = input(f"{FEEDBACK_PREFIX} Next file name or q for quit: ")
+        if next_file_name == "q" or next_file_name == "Q":
+            has_next = False
+        else:
+            main(next_file_name)
+
+    print("Good bye!")
