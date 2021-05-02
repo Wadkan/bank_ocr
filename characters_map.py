@@ -53,3 +53,11 @@ int_part_map_for_existing = {
     8: [0, 1, 2, 3, 4, 5, 6],
     9: [0, 1, 2, 3, 5, 6, ],
 }
+
+all_part = list(range(0, 7))
+
+
+for chars in int_part_map_for_existing.values():
+    print('existing: ', chars)
+    diff = list(set(all_part) - set(chars))
+    print('diff: ', diff)
