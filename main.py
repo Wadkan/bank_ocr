@@ -1,8 +1,8 @@
 import os
 
-from characters_map import int_map_dict, int_part_map_for_existing
-from utils import read_file, create_row_string, write_data_to_file, repair_rows_if_wrong_length, check_and_create_folders
-from config import WIDTH_OF_CHAR, NUMBER_OF_CHARACTERS_PER_ROW, ROW_LEN, ERROR_PREFIX, FEEDBACK_PREFIX, ILL_SUFFIX, ERR_SUFFIX
+from characters_map import int_map_dict
+from utils import read_file, create_row_string, write_data_to_file, repair_rows_if_wrong_length, check_and_create_folders, get_corrections, get_digit_from_string
+from config import WIDTH_OF_CHAR, NUMBER_OF_CHARACTERS_PER_ROW, ROW_LEN, FEEDBACK_PREFIX, ILL_SUFFIX, ERR_SUFFIX, AMB_SUFFIX
 
 
 def parse_file_into_entries(raw_text):
@@ -71,8 +71,25 @@ def validate_a_row(row):
     return row_final
 
 
-def validation_and_correction(characters_parsed, data_string):
+def validation_and_correction(characters_parsed, data_string, characters_parsed_with_more_solutions):
+    valid_solutions = []
+
     row_string, suffix = validate_a_row(characters_parsed)
+    orig_solution = row_string, suffix
+
+    if len(characters_parsed_with_more_solutions) > 0:
+
+        for characters_parsed_this in characters_parsed_with_more_solutions:
+            row_string, suffix = validate_a_row(characters_parsed_this)
+            if suffix is None:
+                valid_solution = row_string, suffix
+                valid_solutions.append(valid_solution)
+
+        if 1 < len(valid_solutions) or len(valid_solutions) < 1:
+            row_string, suffix = orig_solution[0], AMB_SUFFIX
+        else:
+            row_string, suffix = valid_solutions[0][0]
+
     characters_parsed_string = f'{row_string} {suffix}'
     data_string.append(characters_parsed_string)
     print(characters_parsed_string)
@@ -90,26 +107,52 @@ def parse_entries_into_data(entries):
     for entry in entries:
 
         characters_parsed = []
+        characters_parsed_with_more_solutions = []
 
+        solutions_number = 1
         for character in entry:
+            if_more_digits = False
             if len(character) < 9:
                 print(f'{FEEDBACK_PREFIX} bad: ', character)
             else:
-                # digit = [elem for elem in int_map_dict.keys() if character == int_map_dict[elem]]
+                digit = get_digit_from_string(character)
 
-                digit = None
-                for elem in int_map_dict.keys():
-                    if character == int_map_dict[elem]:
-                        digit = elem
-                    else:
-                        print('BAD CHAR')
+                if digit is None:
+                    corrected_digit_list = []
 
+                    # get possible corrections
+                    corrections = get_corrections(character)
+
+                    # try to convert correction into int
+                    for correction in corrections:
+                        one_digit = get_digit_from_string(correction)
+                        if one_digit is not None:
+                            corrected_digit_list.append(digit)
+                            if_more_digits = True
+                            solutions_number += 1
+
+                # create new list if there are many solutions
+                if if_more_digits:
+                    for one_digit in corrected_digit_list:
+                        orig_list_copy = characters_parsed.copy()
+                        orig_list_copy.append(one_digit)
+                        characters_parsed_with_more_solutions.append(orig_list_copy)
+
+                # append original list and multiple lists with original digit
                 characters_parsed.append(digit)
+
+                if characters_parsed_with_more_solutions:
+                    for one_list in characters_parsed_with_more_solutions:
+                        if not corrected_digit_list:
+                            one_list.append(digit)
+                        else:
+                            for one_digit in corrected_digit_list:
+                                one_list.append(one_digit)
 
         data_ints.append(characters_parsed)
 
         # DO VALIDATION
-        validation_and_correction(characters_parsed, data_string)
+        validation_and_correction(characters_parsed, data_string, characters_parsed_with_more_solutions)
 
     return data_ints, data_string
 

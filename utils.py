@@ -1,6 +1,7 @@
 import os
 import time
 
+from characters_map import int_map_dict
 from config import ERROR_PREFIX, BAD_CHARACTER_SIGN, FEEDBACK_PREFIX
 from os.path import dirname, abspath
 
@@ -107,3 +108,45 @@ def repair_rows_if_wrong_length(row, row_len):
     elif len(row) > row_len:
         row = row[:row_len]
     return row
+
+
+def get_corrections(char_to_correct):
+    """
+
+    :param char_to_correct: one character string representation
+    :return: available correction List of Strings
+    """
+    # 8 is the digit, that uses all parts
+    FULL_DIGIT = int_map_dict[8]
+
+    def change_one_part(char, elem_num, new_part):
+        char_list = list(char)
+        char_list[elem_num] = new_part
+        return "".join(char_list)
+
+    # char_to_correct = int_map_dict[digit_char]
+
+    corrections = []
+    for i in range(len(char_to_correct)):
+        char_part = char_to_correct[i]
+        char_part_if_full = FULL_DIGIT[i]
+
+        # part is empty, but could be full
+        if char_part == ' ' and char_part_if_full != ' ':
+            correction = change_one_part(char_to_correct, i, char_part_if_full)
+            corrections.append(correction)
+
+        # part is not empty, correct to empty
+        if char_part != ' ':
+            correction = change_one_part(char_to_correct, i, ' ')
+            corrections.append(correction)
+
+    return corrections
+
+
+def get_digit_from_string(character):
+    digit = None
+    for elem in int_map_dict.keys():
+        if character == int_map_dict[elem]:
+            digit = elem
+    return digit
