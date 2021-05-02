@@ -179,5 +179,5 @@ def main(test_mode_file_name=False):
 
 
 if __name__ == '__main__':
-    test_mode_file_name = 'use_case_4_in.txt'  # comment it out to use CLI
+    test_mode_file_name = 'use_case_a.txt'  # comment it out to use CLI
     main(test_mode_file_name)

@@ -91,7 +91,13 @@ def create_row_string(row):
     for elem in row:
         if elem is None:
             elem = BAD_CHARACTER_SIGN
-        row_string += str(elem)
+        if elem > 9:
+            # in case of hex
+            row_string += str(hex(10))[2:].upper()
+        else:
+            # in case of int
+            row_string += str(elem)
+
     return row_string
 
 
