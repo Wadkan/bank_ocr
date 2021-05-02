@@ -58,7 +58,7 @@ def write_data_to_file(data, output_file_with_path, mode):
     :param mode: 'string': rows as strings, 'int': rows as List of ints
     :return: void
     """
-    output_file_with_path += f'{mode}_output_file_with_path'
+    output_file_with_path += f'_{mode}_out'
 
     try:
         with open(output_file_with_path, "w") as output_file:
