@@ -1,6 +1,6 @@
 import os
 
-from characters_map import int_map_dict
+from characters_map import character_map
 from utils import read_file, create_row_string, write_data_to_file, repair_rows_if_wrong_length, check_and_create_folders, get_corrections, get_digit_from_string
 from config import WIDTH_OF_CHAR, NUMBER_OF_CHARACTERS_PER_ROW, ROW_LEN, FEEDBACK_PREFIX, ILL_SUFFIX, ERR_SUFFIX, AMB_SUFFIX
 

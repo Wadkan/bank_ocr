@@ -1,4 +1,4 @@
-int_map_dict = {
+character_map = {
     0:
         " _ " +
         "| |" +

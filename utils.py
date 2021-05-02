@@ -1,7 +1,7 @@
 import os
 import time
 
-from characters_map import int_map_dict
+from characters_map import character_map
 from config import ERROR_PREFIX, BAD_CHARACTER_SIGN, FEEDBACK_PREFIX
 from os.path import dirname, abspath
 
@@ -117,14 +117,14 @@ def get_corrections(char_to_correct):
     :return: available correction List of Strings
     """
     # 8 is the digit, that uses all parts
-    FULL_DIGIT = int_map_dict[8]
+    FULL_DIGIT = character_map[8]
 
     def change_one_part(char, elem_num, new_part):
         char_list = list(char)
         char_list[elem_num] = new_part
         return "".join(char_list)
 
-    # char_to_correct = int_map_dict[digit_char]
+    # char_to_correct = character_map[digit_char]
 
     corrections = []
     for i in range(len(char_to_correct)):
@@ -146,7 +146,7 @@ def get_corrections(char_to_correct):
 
 def get_digit_from_string(character):
     digit = None
-    for elem in int_map_dict.keys():
-        if character == int_map_dict[elem]:
+    for elem in character_map.keys():
+        if character == character_map[elem]:
             digit = elem
     return digit
