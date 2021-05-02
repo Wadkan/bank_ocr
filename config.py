@@ -1,9 +1,12 @@
 import configparser
+import os
 
+dir_path = os.path.dirname(os.path.realpath(__file__))
 config_file_name = 'config.ini'
+config_file_path = os.path.join(dir_path, config_file_name)
 
 config = configparser.ConfigParser()
-config.read(config_file_name)
+config.read(config_file_path)
 
 WIDTH_OF_CHAR = int(config['settings']['width_of_char'])
 NUMBER_OF_CHARACTERS_PER_ROW = int(config['settings']['number_of_characters_per_row'])
