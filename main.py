@@ -1,6 +1,6 @@
 import os
 
-from characters_map import characters_map_dict
+from characters_map import int_map_dict, int_part_map_for_existing
 from utils import read_file, create_row_string, write_data_to_file, repair_rows_if_wrong_length, check_and_create_folders
 from config import WIDTH_OF_CHAR, NUMBER_OF_CHARACTERS_PER_ROW, ROW_LEN, ERROR_PREFIX, FEEDBACK_PREFIX, ILL_SUFFIX, ERR_SUFFIX
 
@@ -47,6 +47,7 @@ def parse_file_into_entries(raw_text):
 def validate_a_row(row):
     """
     Calculate checksum, and print the validation using the proper SUFFIX.
+    If checksum is valid, Suffix -> None
     :param row: List of ints
     :return: Data (String), Suffix (String)
     """
@@ -94,12 +95,14 @@ def parse_entries_into_data(entries):
             if len(character) < 9:
                 print(f'{FEEDBACK_PREFIX} bad: ', character)
             else:
-                # digit = [elem for elem in characters_map_dict.keys() if character == characters_map_dict[elem]]
+                # digit = [elem for elem in int_map_dict.keys() if character == int_map_dict[elem]]
 
                 digit = None
-                for elem in characters_map_dict.keys():
-                    if character == characters_map_dict[elem]:
+                for elem in int_map_dict.keys():
+                    if character == int_map_dict[elem]:
                         digit = elem
+                    else:
+                        print('BAD CHAR')
 
                 characters_parsed.append(digit)
 
